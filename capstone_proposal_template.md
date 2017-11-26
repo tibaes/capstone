@@ -3,7 +3,10 @@
 ## Capstone Proposal
 
 Rafael Henrique Tibães
-December 26, 2017
+
+_December 26, 2017_
+
+---
 
 ## Proposal
 
@@ -23,7 +26,7 @@ For this work, the ideal dataset should contain fingerprint images paired with n
 
 ### Solution Statement
 
-In literature there are a lot of examples of the capability that Convolution Neural Networks have to handle image classification problems. Our approach will follow a similar network as Kai et al. [1], composed by a few convolutional layers, followed by max-pooling and fully-connected layers, and finally the output layer. As input we use the dataset images. The output matches the fundamental type classes, so the output layer has only five nodes, one for each class: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. This approach allow us to measure the performance of the algorithm by computing its accuracy using the dataset labels. We use a python notebook with keras and tensorflow so our experiments can be easily replicated.
+In literature there are a lot of examples of the capability that Convolution Neural Networks have to handle image classification problems. Our approach is inspired by the network of Kai et al. [1], so it will be composed by a few convolutional layers, followed by max-pooling and fully-connected layers, and finally the output layer. As input we use the dataset images. The output matches the fundamental type classes, so the output layer has only five nodes, one for each class: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. This approach allow us to measure the performance of the algorithm by computing its accuracy using the dataset labels. We use a python notebook with keras and tensorflow so our experiments can be easily replicated.
 
 ### Benchmark Model
 
@@ -37,6 +40,57 @@ The algorithm will be evaluated accordingly its accuracy to correctly classify t
 _(approx. 1 page)_
 
 In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+
+![Fingerprint](img/fingerprint.png)
+
+```
+Gender: M
+Class: W
+History: f0001_01.pct W a0591.pct
+```
+
+```
+docker pull datmo/keras-tensorflow
+nvidia-docker run --name capstone -p 8888:8888 -v(pwd):/workspace -ti datmo/keras-tensorflow:gpu
+```
+
+1. slit dataset into train, validation and test
+2. convert dataset notes into one not encoded classification
+3. convert fingerprint images into 4D Tensors: (nb_samples, 512, 512, 1)
+4. model and compile the CNN architecture
+5. train the model into multiple epochs, using train and validation sets
+6. load the model with the best validation loss
+7. compute the accuracy of the model
+
+
+```
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_4 (Conv2D)            (None, 512, 512, 16)      160       
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 256, 256, 16)      0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 256, 256, 32)      4640      
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 128, 128, 32)      0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 128, 128, 64)      18496     
+_________________________________________________________________
+max_pooling2d_6 (MaxPooling2 (None, 64, 64, 64)        0         
+_________________________________________________________________
+global_average_pooling2d_2 ( (None, 64)                0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 100)               6500      
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 5)                 505       
+=================================================================
+Total params: 30,301
+Trainable params: 30,301
+Non-trainable params: 0
+_________________________________________________________________
+```
 
 -----------
 
