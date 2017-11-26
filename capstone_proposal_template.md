@@ -26,9 +26,8 @@ For this work, the ideal dataset should contain fingerprint images paired with n
 In literature there are a lot of examples of the capability that Convolution Neural Networks have to handle image classification problems. Our approach will follow a similar network as Kai et al. [1], composed by a few convolutional layers, followed by max-pooling and fully-connected layers, and finally the output layer. As input we use the dataset images. The output matches the fundamental type classes, so the output layer has only five nodes, one for each class: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. This approach allow us to measure the performance of the algorithm by computing its accuracy using the dataset labels. We use a python notebook with keras and tensorflow so our experiments can be easily replicated.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
 
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
+As I did not found in literature an algorithm for this exact purpose, I will compare our approach with a random guess. In this manner, giving that we have five classes, our approach must achieve an accuracy above 20%, otherwise it would perform worse than picking a random value.
 
 ### Evaluation Metrics
 _(approx. 1-2 paragraphs)_
