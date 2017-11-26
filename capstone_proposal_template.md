@@ -3,7 +3,7 @@
 ## Capstone Proposal
 
 Rafael Henrique Tibães
-December 1, 2017
+December 26, 2017
 
 ## Proposal
 
@@ -27,12 +27,11 @@ In literature there are a lot of examples of the capability that Convolution Neu
 
 ### Benchmark Model
 
-As I did not found in literature an algorithm for this exact purpose, I will compare our approach with a random guess. In this manner, giving that we have five classes, our approach must achieve an accuracy above 20%, otherwise it would perform worse than picking a random value.
+As I did not found in literature an algorithm for this exact purpose, I will compare the proposed approach with a random guess. In this manner, giving that we have five classes, our approach must achieve an accuracy above 20%, otherwise it would perform worse than picking a random value.
 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
+The algorithm will be evaluated accordingly its accuracy to correctly classify the fundamental type of each fingerprint image in the _NIST Dataset_ [2]. To avoid overfitting, the dataset will be split in three subsets: training set, validation set and testing set. For the accuracy measurement it will be used the testing set. The accuracy represents the percentage of fingerprint fundamental type that were corrected labeled by the algorithm according the dataset labels.
 
 ### Project Design
 _(approx. 1 page)_
