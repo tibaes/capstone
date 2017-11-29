@@ -4,7 +4,7 @@
 
 Rafael Henrique Tibães
 
-_December 26, 2017_
+_December 01, 2017_
 
 ---
 
@@ -37,9 +37,26 @@ As I did not found in literature an algorithm for this exact purpose, I will com
 The algorithm will be evaluated accordingly its accuracy to correctly classify the fundamental type of each fingerprint image in the _NIST Dataset_ [2]. To avoid overfitting, the dataset will be split in three subsets: training set, validation set and testing set. For the accuracy measurement it will be used the testing set. The accuracy represents the percentage of fingerprint fundamental type that were corrected labeled by the algorithm according the dataset labels.
 
 ### Project Design
-_(approx. 1 page)_
 
-In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+This work aims to provide a robust algorithm to classify the fundamental type given a fingerprint image, based on Convolutional Neural Networks. It worth notice that for the development it is used a docker container with NVidia GPU support, so we get both high performance and replicability. To use the same environment of this work, you shall we the following commands:
+
+```
+docker pull datmo/keras-tensorflow
+cd <PATH_TO_PROJECT>
+nvidia-docker run --name capstone -p 8888:8888 -v(pwd):/workspace -ti datmo/keras-tensorflow:gpu
+```
+
+The development of this project can be divaded into three phases: pre-processing, training and testing. Pre-processing phase is composed by spliting the dataset into training, validation and testing sets; parsing the dataset labels; and converting images to 4D tensors. Training is composed by model architecturing and effectively training the model. Finally, in testing phase, the optimal model is loaded and it is computed its accuracy over the testing set. Follows a list of these steps:
+
+1. Slit dataset into train, validation and test
+2. Convert dataset notes into one not encoded classification
+3. Convert fingerprint images into 4D Tensors: (nb_samples, 512, 512, 1)
+4. Model and compile the CNN architecture
+5. Train the model into multiple epochs, using train and validation sets
+6. Load the model with the best validation loss
+7. Compute the accuracy of the model
+
+The dataset labels are stored in text files with an equivalent file path of the image data. Text are formated with informations about person's gender, fingerprint fundamental type and history. From all these information, only the fingerprint fundamental type is relevant to our classification task. Images are 512 x 512 grayscale that must be converted to 4D Tensors. 
 
 ![Fingerprint](img/fingerprint.png)
 
@@ -48,20 +65,6 @@ Gender: M
 Class: W
 History: f0001_01.pct W a0591.pct
 ```
-
-```
-docker pull datmo/keras-tensorflow
-nvidia-docker run --name capstone -p 8888:8888 -v(pwd):/workspace -ti datmo/keras-tensorflow:gpu
-```
-
-1. slit dataset into train, validation and test
-2. convert dataset notes into one not encoded classification
-3. convert fingerprint images into 4D Tensors: (nb_samples, 512, 512, 1)
-4. model and compile the CNN architecture
-5. train the model into multiple epochs, using train and validation sets
-6. load the model with the best validation loss
-7. compute the accuracy of the model
-
 
 ```
 Layer (type)                 Output Shape              Param #   
