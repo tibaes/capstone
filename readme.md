@@ -1,6 +1,6 @@
 # Machine Learning Engineer Capstone
 
-This work aims to provide a robust algorithm to classify the fundamental type given a fingerprint image, based on Convolutional Neural Networks, as described in the [proposal](capstone_proposal_template.md). It worth notice that for the development it is used a docker container with Keras, Tensorflow and NVidia GPU support, so we get both high performance and repeatability. To use the same environment of this work, you shall we the following commands:
+This work aims to provide a robust algorithm to classify the fundamental type given a fingerprint image, based on Convolutional Neural Networks, as described in the [proposal](capstone_proposal_template.md). It worth notice that for the development it is used a docker container with Keras, Tensorflow and NVidia GPU support, so we get both high performance and repeatability. To use the same environment of this work, you shall use the following commands:
 
 ```
 docker pull datmo/keras-tensorflow
