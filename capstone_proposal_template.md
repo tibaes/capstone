@@ -12,21 +12,23 @@ _December 01, 2017_
 
 ### Domain Background
 
-In biometrics there are two main operations: verification (1:1) and identification (1:N). Verification is the process to confirm a given person's identity based on its biometrics. Identification is the process to identify a person's identity based on its biometrics, i.e. searching the correspondent biometric model in the database. A naive identification algorithm would perform the verification procedure for each person stored in the database. To reduce the computational costs, a clever approach would compute indexes for each biometric model in the database. With a properly indexed database, the identification process would require to perform the verification algorithm only in a reduced subset of the database.
+In biometrics there are two main operations: verification (1:1) and identification (1:N). Verification is the process to confirm a person's identity based on its biometrics. Identification is the process to identify a person's identity based on its biometrics, i.e. searching the correspondent biometric model in the database. A naive identification algorithm would perform the verification procedure for each person's biometric model stored in the database. To reduce the computational costs, a clever approach would compute indexes for each biometric model in the database. With a properly indexed database, the identification process would require to perform the verification algorithm only in a reduced subset of the database.
 
-I am particularly interested in this problem because I need a solution for a complex newborn fingerprint identification platform that I am working with. In a real world application it would be easy to have a huge database, which would take a very long time to compute a naive identification algorithm. Proprietary technology is capable to achieve a high speed identification feedback, however they are not suitable for our needs. Kai et al. [1] uses a Convolutional Neural Network (CNN) to identify the pattern of small fingerprint patches, targeting forensics applications. In this work we adapt this algorithm to compute the most basic fingerprint indexation: the ridge pattern.
+I am particularly interested in this problem because I need a solution for a complex newborn fingerprint identification platform that I am working with. In a real world application it would be easy to have a huge database, which would take a very long time to compute a naive identification algorithm. Proprietary technology is capable to achieve a high speed identification feedback, however they are not suitable for our needs. Kai et Al. [1] uses a Convolutional Neural Network (CNN) to identify the pattern of small fingerprint patches, targeting forensics applications. In this work we adapt this algorithm to compute the most basic fingerprint indexation: the ridge pattern.
 
 ### Problem Statement
 
-Accordingly to _NIST_ [2] there are five fundamental classes of fingerprint: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. If we could compute the fundamental type of every fingerprint, this information could be used to perform the database indexation. Using just this indexation we have a potential to perform the identification task (1:N) almost five times faster! Strong solutions to classification tasks usually rely on Convolutional Neural Network (CNN). In this work we plan to use a CNN to classify the fundamental type of a fingerprint. This is a multi-class classification problem, with well established metrics for accuracy. Given a database of labeled fingerprint images, containing the fundamental type information, the algorithm should give the same answer as the database labels.
+Accordingly to _NIST_ [2] there are five fundamental classes of fingerprint: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. If we could compute the fundamental type of every fingerprint, this information could be used to perform the database indexation. Using just this indexation we have a potential to perform the identification task (1:N) almost five times faster! Strong solutions to image classification tasks usually rely on Convolutional Neural Network (CNN). In this work we plan to use a CNN to classify the fundamental type of a fingerprint. This is a multi-class classification problem, with well established metrics for accuracy. Given a database of labeled fingerprint images, containing the fundamental type information, the algorithm should give the same answer as the database labels.
 
 ### Datasets and Inputs
 
-For this work, the ideal dataset should contain fingerprint images paired with notations about the fundamental type information. _NIST Special Database 4_ [2] was developed for this purpose and is free for research. In this dataset, all images are stored in gray scale _PNG_ files, having a dimension of _512 x 512_ pixels. The fingerprints images were acquired under varying conditions, so there are images with good and others with poor quality. The quality is affected mostly by the skin's humidity and the pressure applied on sensor. As result, a poor quality image have blurred borders, making it harder to distinguish ridges of valleys.
+For this work, the ideal dataset should contain fingerprint images paired with notations about the fundamental type information. _NIST Special Database 4_ [2][3] was developed for this purpose and is free for research. In this dataset, all images are stored in gray scale _PNG_ files, having a dimension of _512 x 512_ pixels. The fingerprints images were acquired under varying conditions, so there are images with good and others with poor quality. The quality is affected mostly by the skin's humidity and the pressure applied on sensor. As result, a poor quality image have blurred borders, making it harder to distinguish ridges from valleys. A database sample of the pair fingerprint image & notations is presented in Figure 1.
+
+![Fingerprint sample image. Labels: "Gender: M Class: W History: f0001_01.pct W a0591.pct".](img/fingerprint.png)
 
 ### Solution Statement
 
-In literature there are a lot of examples of the capability that Convolution Neural Networks have to handle image classification problems. Our approach is inspired by the network of Kai et al. [1], so it will be composed by a few convolutional layers, followed by max-pooling and fully-connected layers, and finally the output layer. As input we use the dataset images. The output matches the fundamental type classes, so the output layer has only five nodes, one for each class: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. This approach allow us to measure the performance of the algorithm by computing its accuracy using the dataset labels. We use a python notebook with keras and tensorflow so our experiments can be easily replicated.
+In literature there are lot of examples demonstrating the capability that Convolution Neural Networks have to handle image classification problems. Our approach is inspired by the network of Kai et Al. [1], so it will be composed by a few convolutional layers, followed by max-pooling and fully-connected layers, and finally the output layer. As input we use the dataset images. The output matches the fundamental type classes, so the output layer has only five nodes, one for each class: i) Arch, ii) Left Loop, iii) Right Loop, iv) Tented Arch, and v) Whorl. This approach allows us to measure the performance of the algorithm by computing its accuracy using the dataset labels. We use a Python notebook with Keras and Tensorflow, inside a Docker container, so our experiments can be easily replicated.
 
 ### Benchmark Model
 
@@ -38,33 +40,17 @@ The algorithm will be evaluated accordingly its accuracy to correctly classify t
 
 ### Project Design
 
-This work aims to provide a robust algorithm to classify the fundamental type given a fingerprint image, based on Convolutional Neural Networks. It worth notice that for the development it is used a docker container with NVidia GPU support, so we get both high performance and replicability. To use the same environment of this work, you shall we the following commands:
+The development of this project can be divided into three phases: preprocessing, training and testing. Preprocessing phase is composed by splitting the dataset into training, validation and testing sets; parsing the dataset labels; and converting images to 4D tensors. Training is composed by model architecture and effectively training the model. Finally, in testing phase, the optimal model is loaded and it is computed its accuracy over the testing set. Follows a list of these steps:
 
-```
-docker pull datmo/keras-tensorflow
-cd <PATH_TO_PROJECT>
-nvidia-docker run --name capstone -p 8888:8888 -v(pwd):/workspace -ti datmo/keras-tensorflow:gpu
-```
+1. Slit dataset into train, validation and test.
+2. Convert dataset notes into one-hot-encoded classification labels.
+3. Convert fingerprint images into 4D Tensors in the form _(nb_samples, 512, 512, 1)_.
+4. Model and compile the CNN architecture.
+5. Train the model with multiple epochs, using training and validation sets.
+6. Load the model with the best validation loss.
+7. Compute the accuracy of the model.
 
-The development of this project can be divaded into three phases: pre-processing, training and testing. Pre-processing phase is composed by spliting the dataset into training, validation and testing sets; parsing the dataset labels; and converting images to 4D tensors. Training is composed by model architecturing and effectively training the model. Finally, in testing phase, the optimal model is loaded and it is computed its accuracy over the testing set. Follows a list of these steps:
-
-1. Slit dataset into train, validation and test
-2. Convert dataset notes into one not encoded classification
-3. Convert fingerprint images into 4D Tensors: (nb_samples, 512, 512, 1)
-4. Model and compile the CNN architecture
-5. Train the model into multiple epochs, using train and validation sets
-6. Load the model with the best validation loss
-7. Compute the accuracy of the model
-
-The dataset labels are stored in text files with an equivalent file path of the image data. Text are formated with informations about person's gender, fingerprint fundamental type and history. From all these information, only the fingerprint fundamental type is relevant to our classification task. Images are 512 x 512 grayscale that must be converted to 4D Tensors. 
-
-![Fingerprint](img/fingerprint.png)
-
-```
-Gender: M
-Class: W
-History: f0001_01.pct W a0591.pct
-```
+The network architecture is presented in the following _summary_, provided by the Keras library. The network is composed by pairs of convolution and max-pooling layers, as a way to convert the spacial dimensions to a deep feature vector. The network have a dense layer to establish connections over features, followed by a dropout layer to minimize overfitting. Finally a dense layer of five nodes, one for each fundamental type class, representing our output.
 
 ```
 Layer (type)                 Output Shape              Param #   
@@ -94,16 +80,6 @@ Trainable params: 30,301
 Non-trainable params: 0
 _________________________________________________________________
 ```
-
------------
-
-**Before submitting your proposal, ask yourself. . .**
-
-- Does the proposal you have written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Solution Statement** and **Project Design**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your proposal?
-- Have you properly proofread your proposal to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
 
 # References
 
