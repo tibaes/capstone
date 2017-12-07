@@ -20,16 +20,16 @@ mv <DownloadPath>/NISTSpecialDatabase4GrayScaleImagesofFIGS/sd04/png_txt/* <Proj
 To simplify, I wrote a simple bash script [dataset parser](./parse.sh) that iterates over each pair of image & text, to generate a single CSV file in the form `<image_path>, <class_symbol>`:
 
 ```
-path, target
-./data/figs_3/f0779_10.png, L
-./data/figs_3/s0753_03.png, R
-./data/figs_3/f0844_03.png, T
-./data/figs_3/s0932_01.png, A
-./data/figs_3/f0769_04.png, R
-./data/figs_3/f0793_09.png, L
-./data/figs_3/f0847_01.png, W
-./data/figs_3/s0818_02.png, L
-./data/figs_3/f0790_01.png, R
+path,target
+./data/figs_3/f0779_10.png,L
+./data/figs_3/s0753_03.png,R
+./data/figs_3/f0844_03.png,T
+./data/figs_3/s0932_01.png,A
+./data/figs_3/f0769_04.png,R
+./data/figs_3/f0793_09.png,L
+./data/figs_3/f0847_01.png,W
+./data/figs_3/s0818_02.png,L
+./data/figs_3/f0790_01.png,R
 ```
 
 ## Convolutional Neural Network
