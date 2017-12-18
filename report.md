@@ -20,11 +20,19 @@ Inspired by the Udacity _dog breed_ assignment, and also by the work of Kai et A
 
 ## Analisys
 
-![A](img/A.png)
-![W](img/W.png)
-![T](img/T.png)
-![R](img/R.png)
-![L](img/L.png)
+For this work, the ideal dataset should contain fingerprint images paired with notations about the fundamental type information. _NIST Special Database 4_ [2][3] was developed for this purpose and is free for research. In this dataset, all images are stored in gray scale _PNG_ files, having a dimension of _512 x 512_ pixels. The fingerprints images were acquired under varying conditions, so there are images with good and others with poor quality. The quality is affected mostly by the skin's humidity and the pressure applied on sensor. As result, a poor quality image have blurred borders, making it harder to distinguish ridges from valleys.
+
+The _NIST_ dataset contains `4000` fingerprint images, uniformly distributed along the five fundamental types, i.e. there are `800` fingerprint images of each class:  i) (A) Arch, ii) (L) Left Loop, iii) (R) Right Loop, iv) (T) Tented Arch, and v) (W) Whorl. This is an important feature, because for classification tasks it is fundamental to balance the dataset before training. Figures 1 to 5 are fingerprints samples from this dataset, to present the characteristics of each fundamental type, and Figure 6 presents the data distribution.
+
+![Fingerprint of type Arch (A). Notice that the central part of the fingerprint is composed by smooth lines. This sample also presents a partially occluded fingerprint, because it was not acquired with focus on its center.](img/A.png)
+
+![Fingerprint of type Tented Arch (T). Notice that the central part of the fingerprint is composed by a strong peak, in contrast to the Arch type. This sample also presents a poor quality image, as we can see that the ridges are blurred.](img/T.png)
+
+![Fingerprint of type Whorl (W).  Notice that the central part of the fingerprint is composed by a ciclic pattern.](img/W.png)
+
+![Fingerprint of type Right Loop (R). Notice that the central part of the fingerprint is composed by a curve on the right. ](img/R.png)
+
+![Fingerprint of type Left Loop (L). Notice that the central part of the fingerprint is composed by a curve on the left.](img/L.png)
 
 ## Methodology
 
