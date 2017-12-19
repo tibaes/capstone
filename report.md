@@ -34,6 +34,8 @@ The _NIST_ dataset contains `4000` fingerprint images, uniformly distributed alo
 
 ![Fingerprint of type Left Loop (L). Notice that the central part of the fingerprint is composed by a curve on the left.](img/L.png)
 
+![Graphic of classes distribution on NIST Dataset: all samples are evenly distributed among the five classes.](img/classesDistribution.png)
+
 ## Methodology
 
 ## Results
