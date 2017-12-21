@@ -44,6 +44,14 @@ As I haven't found in literature an algorithm for this exact purpose, I will com
 
 ## Methodology
 
+Usually, an image classification algorithm requires pre-processing of the image data. In this work, this pre-processing is composed by three modules: i. conversion of images to tensors, ii. conversion of database text to classification labels, and iii. database split of training and texting subsets.
+
+The first module, conversion of images to tensors, is a simple procedure that read the dataset images and reorganize the information to be compatible with Keras/Tensorflow _Tensor_ data structure, in the format _(512, 512, 1)_.
+
+The second module, conversion of database text to classification labels, is based on a [script](parse.sh) that parses the dataset text to one of these five characters: 'A', 'W', 'T', 'R' and 'L'. For example, the sample text: `Gender: M Class: W History: f0001_01.pct W a0591.pct` results to `W`. However, a character is not adequate for classification, so we perform one hot encoding over these labels.
+
+The last pre-processing module, database split, uses the keras function `train_test_split` to split the samples into `70%` for training and `30%` for testing, using a random factor for picking samples.
+
 ## Results
 
 ## Conclusion
