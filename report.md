@@ -36,6 +36,12 @@ The _NIST_ dataset contains `4000` fingerprint images, uniformly distributed alo
 
 ![Graphic of classes distribution on NIST Dataset: all samples are evenly distributed among the five classes.](img/classesDistribution.png)
 
+Image classification can be achieved by different algorithms, such as Perceptrons, Support Vector Machines (SVM) and Convolutional Neural Networks (CNN). In recent image classification competitions it is common for CNN to be ranked as the most accurate algorithm, using complex networks as _AlexNet_, _Inception_ and _ResNet_. In this work we adopted CNN for its robustness and accuracy, building a simple network inspired by the network of Kai et Al. [1].
+
+The algorithm will be evaluated accordingly to its accuracy to correctly classify the fundamental type of each fingerprint image in the _NIST Dataset_ [2]. To avoid overfitting, the dataset will be split in three subsets: training set, validation set and testing set. For the accuracy measurement it will be used the testing set. The accuracy represents the percentage of fingerprint fundamental type that were corrected labeled by the algorithm according the dataset labels.
+
+As I haven't found in literature an algorithm for this exact purpose, I will compare the proposed approach with a random guess. In this manner, giving that we have five classes, our approach must achieve an accuracy above 20%, otherwise it would perform worse than picking a random value.
+
 ## Methodology
 
 ## Results
