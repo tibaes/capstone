@@ -50,13 +50,44 @@ The first module, conversion of images to tensors, is a simple procedure that re
 
 The second module, conversion of database text to classification labels, is based on a [script](parse.sh) that parses the dataset text to one of these five characters: 'A', 'W', 'T', 'R' and 'L'. For example, the sample text: `Gender: M Class: W History: f0001_01.pct W a0591.pct` results to `W`. However, a character is not adequate for classification, so we perform one hot encoding over these labels.
 
-The last pre-processing module, database split, uses the keras function `train_test_split` to split the samples into `70%` for training and `30%` for testing, using a random factor for picking samples.
+The last pre-processing module, database split, uses the keras function `train_test_split` to split the samples into 70% for training and 30% for testing, using a random factor for picking samples.
+
+The proposed classification algorithm is a simple convolutional neural network, composed by three pairs of convolution and max-pooling layers, which transforms the spatial information to a more abstract feature space. These convolution layers are followed by a polling and a fully-connected layers, to connect and select these features. A dropout layer is followed to avoid over-fitting. Finally, another fully-connected layer with only five nodes and a softmax activation is used to compute the final classification label. Follows the network summary from Keras:
+
+```
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_4 (Conv2D)            (None, 512, 512, 16)      160       
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 256, 256, 16)      0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 256, 256, 32)      4640      
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 128, 128, 32)      0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 128, 128, 64)      18496     
+_________________________________________________________________
+max_pooling2d_6 (MaxPooling2 (None, 64, 64, 64)        0         
+_________________________________________________________________
+global_average_pooling2d_2 ( (None, 64)                0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 100)               6500      
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 5)                 505       
+=================================================================
+Total params: 30,301
+Trainable params: 30,301
+Non-trainable params: 0
+_________________________________________________________________
+```
+
+The network, after compilation, is trained with multiple epochs (up to 50), using the checkpoint technique to store the best model, i.e. skipping the persistence of the epoch results if this epoch does not achieve accuracy improvement. Also, 20% of the training set is used for validation to avoid overfitting. A graphic processing unit (GPU) was used do compute the training. Due to graphics memory limitations, the batch size was set to 16 instead of the default 32.
 
 ## Results
 
 ## Conclusion
-
-## References
 
 # References
 
