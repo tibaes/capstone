@@ -87,7 +87,13 @@ The network, after compilation, is trained with multiple epochs (up to 50), usin
 
 ## Results
 
+The proposed solution achieved accuracy of 61% using the best model, i.e. the model that achieved the highest accuracy during the training, to classify the samples of the testing subset. This is three times better than a random guess, which would be 20% of accuracy. However, there is room for improvement. It worth notice that initialy it would be only 20 epochs, with an accuracy of 54%, but a more exaustive run with 50 epochs was considered for the experiments and indeed it performed better.
+
+With accuracy of only 61%, it is already a great improvement for the identification task. Given that the naive approach represents 100% of time, our algorithm takes `(61% * 20%) + ((100% - 61%) * 100%) = 51.2%`, which represents a speed up of 1.953 times, i.e. almost two times faster.
+
 ## Conclusion
+
+The most obvious observation is the improvement congergence, were it takes more time to improved 
 
 # References
 
