@@ -4,7 +4,7 @@
 
 Rafael Henrique Tibães
 
-_December 21, 2017_
+_December 22, 2017_
 
 ---
 
@@ -89,11 +89,17 @@ The network, after compilation, is trained with multiple epochs (up to 50), usin
 
 The proposed solution achieved accuracy of 61% using the best model, i.e. the model that achieved the highest accuracy during the training, to classify the samples of the testing subset. This is three times better than a random guess, which would be 20% of accuracy. However, there is room for improvement. It worth notice that initialy it would be only 20 epochs, with an accuracy of 54%, but a more exaustive run with 50 epochs was considered for the experiments and indeed it performed better.
 
-With accuracy of only 61%, it is already a great improvement for the identification task. Given that the naive approach represents 100% of time, our algorithm takes `(61% * 20%) + ((100% - 61%) * 100%) = 51.2%`, which represents a speed up of 1.953 times, i.e. almost two times faster.
+With accuracy of only 61%, it is already a great improvement for the identification task. Given that the naive approach represents 100% of time, our algorithm takes `(61% * 20%) + ((100% - 61%) * 100%) = 51.2%` of time, which represents a speed up of 1.953 times, i.e. almost two times faster. In contrast, a random guess achieves speed up of just 1.19 times. The graphic of Figure 7 compares the identification using naive, random guess, CNN with 20 epochs and CNN with 50 epochs.
+
+![Identification performance using naive, random guess, CNN with 20 epochs and CNN with 50 epochs.](img/benchmark.png)
 
 ## Conclusion
 
-The most obvious observation is the improvement congergence, were it takes more time to improved 
+In this work it was used a small convolutional neural network composed by few convolutional and max-pooling layers, followed by fully-connected layers, for the training of an image classifier. The objective is to classify fingerprint images into one of the five fundamental types described by _NIST_. The proposed network was trained with 50 epochs, achieving accuracy of 61%, which is above the random guess of 20% as presented by Figure 7. I found interesting the fact that a very simple convolutional network is capable to achieve a decent classification accuracy. However, a more robust network requires a lot of 'trial and error', demanding a great amount of computing resources.
+
+During the training, I found some complications dealing with GPUs. The first limitation was the over-heating of my laptop with a NVIDIA GTX 1070, that was not capable to handle more than 20 epochs. To make it run longer, I switched the experiments to my workstation, with a NVIDIA GTX 1060 and a far better cooling system. The 1060 has only half the memory of 1070 GPU, which was not enought to compute. The solution was reduce the bath_size to half, and then I was able to perform the experiments for 50 epochs. It can be observed that this network has a fast convergence, were it get a high accuracy in a few epochs, but for each new epoch the improvement is smaller.
+
+This project is intented to compose a proprietary fingerprint solution. For this reason I plan to keep working on improvements, using different techniques such as increasing the network complexity or even by transfer-learning of a robust network, i.e. AlexNet, Inception, ResNet, etc. For faster identification, more complex classifiers needs to be used, as bag-of-features based on the most discriminant features, learned by unsuppervised clustering.
 
 # References
 
