@@ -83,13 +83,17 @@ Non-trainable params: 0
 _________________________________________________________________
 ```
 
+The convolutional patch size is ilustrated by Figure 7, where the first pair of layers uses the smallest patch (16x16), the second pair uses the intermediate patch (32x32), and the third pair uses the largest patch (64x64). The smallest patch has enough room for one or two ridges, so it is good to compute local information, as ridge orientation and edges. The remaining patchs are capable to compute more complex features, necessary to classify the fundamental type of a fingerprint. 
+
+![Convolutional patch size for the first layer pair (16x16), second layer pair (32x32) and third layer pair (64x64).]
+
 The network, after compilation, is trained with multiple epochs (up to 50), using the checkpoint technique to store the best model, i.e. skipping the persistence of the epoch results if this epoch does not achieve accuracy improvement. Also, 20% of the training set is used for validation to avoid overfitting. A graphic processing unit (GPU) was used do compute the training. Due to graphics memory limitations, the batch size was set to 16 instead of the default 32.
 
 ## Results
 
 The proposed solution achieved accuracy of 61% using the best model, i.e. the model that achieved the highest accuracy during the training, to classify the samples of the testing subset. This is three times better than a random guess, which would be 20% of accuracy. However, there is room for improvement. It worth notice that initialy it would be only 20 epochs, with an accuracy of 54%, but a more exaustive run with 50 epochs was considered for the experiments and indeed it performed better.
 
-With accuracy of only 61%, it is already a great improvement for the identification task. Given that the naive approach represents 100% of time, our algorithm takes `(61% * 20%) + ((100% - 61%) * 100%) = 51.2%` of time, which represents a speed up of 1.953 times, i.e. almost two times faster. In contrast, a random guess achieves speed up of just 1.19 times. The graphic of Figure 7 compares the identification using naive, random guess, CNN with 20 epochs and CNN with 50 epochs.
+With accuracy of only 61%, it is already a great improvement for the identification task. Given that the naive approach represents 100% of time, our algorithm takes `(61% * 20%) + ((100% - 61%) * 100%) = 51.2%` of time, which represents a speed up of 1.953 times, i.e. almost two times faster. In contrast, a random guess achieves speed up of just 1.19 times. The graphic of Figure 8 compares the identification using naive, random guess, CNN with 20 epochs and CNN with 50 epochs.
 
 ![Identification performance using naive, random guess, CNN with 20 epochs and CNN with 50 epochs.](img/benchmark.png)
 
