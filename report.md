@@ -85,7 +85,7 @@ _________________________________________________________________
 
 The convolutional patch size is ilustrated by Figure 7, where the first pair of layers uses the smallest patch (16x16), the second pair uses the intermediate patch (32x32), and the third pair uses the largest patch (64x64). The smallest patch has enough room for one or two ridges, so it is good to compute local information, as ridge orientation and edges. The remaining patchs are capable to compute more complex features, necessary to classify the fundamental type of a fingerprint. 
 
-![Convolutional patch size for the first layer pair (16x16), second layer pair (32x32) and third layer pair (64x64).]
+![Convolutional patch size for the first layer pair (16x16), second layer pair (32x32) and third layer pair (64x64).](img/patch.png)
 
 The network, after compilation, is trained with multiple epochs (up to 50), using the checkpoint technique to store the best model, i.e. skipping the persistence of the epoch results if this epoch does not achieve accuracy improvement. Also, 20% of the training set is used for validation to avoid overfitting. A graphic processing unit (GPU) was used do compute the training. Due to graphics memory limitations, the batch size was set to 16 instead of the default 32.
 
